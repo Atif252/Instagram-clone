@@ -60,8 +60,8 @@ class Account(AbstractBaseUser):
 
 
 	email				= models.EmailField(verbose_name="email", max_length=255, unique=True)
-	username			= models.CharField(unique=True, max_length=30)
-	name				= models.CharField(max_length=30, null=False, blank=False)
+	username			= models.CharField(unique=True, max_length=255)
+	name				= models.CharField(max_length=255, null=False, blank=False)
 	profile_picture		= models.ImageField(upload_to=upload_location, null=False, blank=True, default='default-pic.jpg')
 	bio					= models.CharField(verbose_name="bio", max_length=150, blank=True, null=False)
 	gender				= models.CharField(max_length=80, choices=GENDER_CHOICES, null=True)
