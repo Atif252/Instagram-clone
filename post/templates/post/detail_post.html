@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+{% load static %}
+
+
+<style type="text/css">
+	.card{
+		box-shadow: 0 0 13px rgba(0, 0, 0, 0.4);
+		border: 1px solid black;
+		padding-right: 0!important;
+	}
+	.container{
+		padding-top: 50px;
+		
+	}
+	@media(min-width: 630px){
+		.container{
+			padding-left: 30px;
+			padding-right: 30px
+		}
+	}
+	.delete-btn{
+		float: right;
+	}
+	.dropdown-btn{
+		margin-left: auto;
+		font-size: 14px;
+	}
+	.card-text{
+		font-size: 15px;
+		color: black;
+	}
+	.card-img-top{
+
+	}
+	#view_comment{
+		color: #999;
+		font-size: 14px;
+		font-weight: 700 !important;
+
+	}
+    .user_image{
+    	border-radius: 50%;
+    	width: 32px;
+    	height: 32px;
+    }
+    .name-field{
+    	color: black;
+    	font-weight: 600;
+    	font-size: 14px;
+    }
+    hr{
+  /*  	margin-right: -20px;
+    	margin-left: -20px;*/
+    	margin: 12px -20px;
+    }
+
+    ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+	}
+   
+
+</style>
+
+
+<div class="container">
+	<div class="row">
+		<!-- Blog Post-->
+		<div class="card pr-4">
+			<div class="row no-gutters">
+				<div class="col-md-6" style="background: black">
+
+					<img class="card-img-top py-5" style="" src="{{current_post.image.url}}">
+				</div>
+				<div class="col-md-6 ">
+					<div class="card-body">
+
+						<!--Don't use safe when getting the text from the user. It enables them to add html css and js into the websites-->
+						<div class="row" >
+
+							<a style="text-decoration: none; font-size: 13px;" class="text-dark" href="{% url 'account_detail' user.slug %}">
+								<img class="user_image ml-2 mr-3" src="{{user.profile_picture.url}}">
+							</a>
+							
+							<p class="name-field">{{user}}</p>
+							<span style="margin-left: 4px; margin-right: 4px;">•</span>
+							<p class="name-field">Following</p>
+							<!-- <span class="dropdown-btn">•••</span> -->
+							<span data-toggle="modal" data-target="#exampleModalCenter" class="dropdown-btn mr-2">•••</span>
+							
+						</div>
+						<hr>
+						<div class="post-body-container">
+							<div class="row">
+								<img class="user_image ml-2 mr-3" src="{{user.profile_picture.url}}">
+								<div class="col" class="col-auto">
+									<div class="row">
+										<p>
+										<span class="name-field">{{user.username}} </span>
+										<span class="card-text">{{current_post.caption|safe}}</span></p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						
+							<!-- {% if current_post.author == request.user %}
+								<a href="{% url 'post:edit_post' current_post.slug %}" class="btn btn-primary">Update</a>
+
+								<a href="{% url 'post:delete_post' current_post.slug %}" class="btn btn-danger delete-btn">Delete</a>
+								
+							{% endif %} -->
+
+
+						</p>
+						{% if liked %}
+							<a class="btn btn-light like-btn" data-href="{% url 'post:like_post_api' current_post.slug %}">Unlike</a>
+						{% else %}
+							<a data-href="{% url 'post:like_post_api' current_post.slug %}" class="btn btn-light like-btn">Like</a>
+						{% endif %}
+
+						
+
+						<a style="font-size: 18px" value='{{ like_count }}' class=" my-2 like-count text-dark" data-likes='{{ like_count }}' href="{% url 'post:likes' current_post.slug %}">{{like_count}} like{{like_count|pluralize}}</a>
+
+
+
+						{% if comments.count > 2 %}
+							<a id="view_comment"  value='{{ comments.count }}' onclick="showcomments()">View all {{comments.count}} comments</a>
+							<div id="all_comments" style="display: none">
+								{% for comment in comments %}
+									<p style="font-size: 13px; border: 1px solid black"><b>{{comment.commenter}}</b> {{comment.comment}}</p>
+								{% endfor %}
+							</div>
+						{% else %}
+							{% for comment in comments %}
+								<p style="font-size: 14px"><b>{{comment.commenter}}</b> {{comment.comment}}</p>
+							{% endfor %}
+						{% endif %}
+						
+					</div>
+					<form class="ajax-form" id="myForm" method="post" data-url="{% url 'post:comment_post' current_post.slug %}" enctype="multiparts/form-data">
+						{% csrf_token %}
+						<div class="card-footer text-muted">
+							<div class="form-group" id="form_id">
+									<input class="form-control" type="text" name="comment" id="commentInput" placeholder="Add a comment...">
+									<button class="submit-button btn-block" type="submit">Post</button>
+								</div>
+							</div>
+							
+						</div>
+					</form>	
+				</div>
+			</div>
+
+		</div>
+
+		<!-- End Blog Post-->
+	</div>
+</div>
+{% include 'post/snippets/like_js.html' %}
+
+
+
+
+
+<script>
+$(document).ready(function(){
+    var $myForm = $('.ajax-form')
+    $myForm.submit(function(event){
+        event.preventDefault()
+        var $formData = $(this).serialize()
+        var $thisURL = $myForm.attr('data-url')
+        console.log($thisURL)
+        $.ajax({
+            method: "POST",
+            url: $thisURL,
+            data: $formData,
+            success: handleFormSuccess,
+            error: handleFormError,
+        })
+    })
+
+    function handleFormSuccess(data, textStatus, jqXHR){
+        console.log(data)
+        console.log(textStatus)
+        console.log(jqXHR)
+        var view_comment = $('#view_comment')
+        var comments_count = parseInt(view_comment.attr('value'))
+        newCount = comments_count + 1
+        view_comment.text('View all ' + newCount + ' comments')
+        view_comment.attr('value', newCount)
+    }
+
+    function handleFormError(jqXHR, textStatus, errorThrown){
+        console.log(jqXHR)
+        console.log(textStatus)
+        console.log(errorThrown)
+    }
+})
+</script>
+
+<script type="text/javascript">
+	function showcomments() {
+		document.getElementById("view_comment").style.display = 'none';
+		document.getElementById("all_comments").style.display = 'block';
+	}
+</script>
+{% endblock content %}

@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load chat_extras %}
+
+{% block content %}
+
+
+
+<style type="text/css">
+  .create-form {
+	    padding: 15px;
+	    margin: auto;
+  	}
+  	.submit-button{
+  		max-width: 70px;
+  	}
+  	.user_image {
+  		border-radius: 50%;
+  	}
+  	p {
+  		/*color: 	#ababab;*/
+  		font-size: 13px;
+	}
+	.main-content{
+		 box-shadow: 0 0 13px rgba(0, 0, 0, 0.4);
+	}
+	.other-user-msg{
+		background-color: white;
+		border: 1.5px #f0f0f0 solid;
+		border-radius: 20px;
+		padding: 7px 13px;
+		max-width: 250px
+		/*margin-right: 420px;*/
+	}
+	.current-user-msg{
+		background-color: #f5f5f5;
+		border-radius: 20px;
+		padding: 7px 13px;
+		max-width: 250px
+		/*margin-left: 420px;*/
+	}
+	::placeholder {
+  		color: #a3a3a3;
+	}
+	.other-user-msg.first_message{
+		border-bottom-left-radius: 0;
+		margin-left: 42px;
+	}
+	.other-user-msg.mid_message{
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+		margin-left: 42px;
+	}
+	.other-user-msg.last_message{
+		border-top-left-radius: 0;
+	}
+	.current-user-msg.first_message{
+		border-bottom-right-radius: 0;
+	}
+
+	.current-user-msg.mid_message{
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+	.current-user-msg.last_message{
+		border-top-right-radius: 0;
+	}
+/*
+	#message_extras{
+    	display: none;
+	}
+
+	p:hover + #message_extras, #message_extras:hover {
+    	display: block;
+	}
+*/
+</style>
+
+
+
+
+<div class="container">
+
+	<div class="col-md-8 offset-md-2 col-lg-10 offset-lg-1 main-content" style="background-color: white; border-radius: 20px;">
+		<div class="row justify-content-start">
+			<img class="user_image mt-3 mb-0 ml-4" width= 60px height= 60px src="{{user_profile.profile_picture.url}}">
+			<p class="ml-2 mt-3 ">{{user_profile.username}}</p>
+		</div>
+		<hr>
+
+		{% for message in messages %}
+			{% with next_element=messages|next:forloop.counter0 %}
+			{% with previous_element=messages|previous:forloop.counter0 %}
+
+			{% if message.message_sender == request.user and message.delete_by_sender == False %}
+				<div class="row" >
+					<div class="col">
+						<div onmouseenter="myEnterFunction()">
+							{% if next_element.message_sender == user_profile and previous_element.message_sender == request.user or next_element == '' and previous_element.message_sender == request.user%}
+								<p class="current-user-msg last_message float-right mb-1" data-toggle="tooltip" data-placement="top" title="{{message.timestamp}}">{{message}}</p>
+							{% elif previous_element.message_sender == request.user and next_element.message_sender == request.user%}
+								<p class="current-user-msg mid_message float-right mb-1" data-toggle="tooltip" data-placement="top" title="{{message.timestamp}}">
+								{{message}}</p>
+
+							{% elif previous_element.message_sender == null or previous_element.message_sender == user_profile and next_element.message_sender == user_profile or next_element.message_sender == null %}
+								<p class="current-user-msg float-right mb-1" data-toggle="tooltip" data-placement="top" title="{{message.timestamp}}">{{message}}</p>
+							{% elif previous_element.message_sender == null or previous_element.message_sender == user_profile and next_element.message_sender == request.user %}
+								<p class="current-user-msg first_message float-right mb-1" data-toggle="tooltip" data-placement="top" title="{{message.timestamp}}">{{message}}</p>
+							
+							
+
+							{% endif %}
+							<div id="message_extras">
+								<p data-toggle="tooltip" data-placement="top" title="Remove" class="float-right mr-2" id="delete_message"><a href="{%url 'chat:delete_message' id=message.id slug=user_profile.slug %}"><img src="{% static 'delete.png' %}"></a>
+								
+									
+								</p>
+							</div>
+							<!-- <p data-toggle="tooltip" data-placement="top" title="Remove" class="float-right mr-2" id="delete_message"><a href="{%url 'chat:delete_message' id=message.id slug=user_profile.slug  %}">Remove</a></p> -->
+						</div>
+						
+					</div>
+				</div>
+
+
+			{% elif message.message_sender == user_profile and message.delete_by_receiver == False %}
+				<div class="row">
+					<a style="text-decoration: none; font-size: 13px;" class="text-dark" href="#">
+
+    					
+						{% if next_element.message_sender == request.user or next_element == '' %}
+							<img data-toggle="tooltip" data-placement="left" title="{{user_profile.username}}" class="user_image ml-2 mr-0" width= 35px height= 35px src="{{user_profile.profile_picture.url}}">
+						{% elif chat.get_last_message_message_sender == user_profile %}
+
+
+						{% endif %}
+						
+						
+						
+					</a>
+					<div class="col">
+						{% if next_element.message_sender == request.user or next_element == '' %}
+							<p data-toggle="tooltip" data-placement="top" title="{{message.timestamp}}" class="other-user-msg last_message float-left mb-1 ml-0" >{{message}}</p>
+							<!-- <div id="message_extras">
+								<p data-toggle="tooltip" data-placement="top" title="Remove" class="float-left ml-2" id="delete_message"><a href="{%url 'chat:delete_message' id=message.id slug=user_profile.slug  %}"><img src="{% static 'delete.png' %}"></a>
+								
+									
+								</p>
+							</div> -->
+
+						{% elif previous_element.message_sender == user_profile and next_element.message_sender == user_profile%}
+							<p data-toggle="tooltip" data-placement="top" title="{{message.timestamp}}" class="other-user-msg mid_message float-left mb-1" >{{message}}</p>
+
+
+						{% else %}
+							<p data-toggle="tooltip" data-placement="top" title="{{message.timestamp}}" class="other-user-msg first_message float-left mb-1">{{message}}</p>
+
+
+
+						{% endif %}
+						
+					</div>
+
+				</div>
+			{% endif %}
+			{% endwith %}
+			{% endwith %}
+		{% endfor %} 
+
+		<div class="row">
+			<form class="create-form" id="myForm" method="post" enctype="multiparts/form-data">{% csrf_token %}
+
+				<!-- Body -->
+				
+				<div class="form-group" id="form_id">
+					<!-- <label for="id_message_body">Message</label>
+					<textarea class="form-control" rows="2" type="text" name="message_body" id="id_message_body" placeholder="Enter message here..." required></textarea> -->
+					<div class="col-sm-10 offset-sm-1">
+						<div class="row">
+							<input class="form-control" type="text" style="background-color: #f5f5f5; border-radius: 20px; border: 1px solid #f5f5f5" name="message_body" id="message_bodyInput" placeholder="Type a message...">
+							<button class="submit-button btn-block" type="submit">Send</button>
+						</div>
+					</div>
+					<input type="hidden" name="message_sender" id="message_senderInput" placeholder="Sender..." value="{{request.user.id}}">
+					<input type="hidden" name="chat" id="chatInput" placeholder="Write a message..." value="{{chat.id}}">
+				</div>
+				
+
+				<!-- Image -->
+				<!-- <div class="form-group">
+					<label for="id_image">Image</label>
+					<input  type="file" name="image" id="id_image" accept="image/*">
+				</div> -->
+
+				<!-- Submit btn -->
+				
+			</form>	
+			
+		</div>
+	</div>
+
+</div>
+
+
+{% endblock %}
+
+<script type="text/javascript">
+	$(function () {
+  		$('[data-toggle="tooltip"]').tooltip()
+	})
+</script>
+
+

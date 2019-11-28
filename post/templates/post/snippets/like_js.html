@@ -1,0 +1,57 @@
+<script>
+     $(document).ready(function(){
+      bool = false;
+
+      
+		  function updateText(btn ,component, newCount, status){
+        if (newCount === 1){
+          component.text(newCount + " " + 'like');
+        }else{
+          component.text(newCount + " " + 'likes');
+        }
+          
+          btn.text(status);
+          component.attr('data-likes', new_count)
+          bool = false;
+
+      }
+
+      $(".like-btn").click(function(e){
+
+        e.preventDefault()
+        if (bool == false){
+          bool = true
+          var index = $(this).index(".like-btn")
+          var this_ = $(this)
+          var likeUrl = this_.attr("data-href")
+          var likeCountText = $('.like-count').eq(index)
+          console.log(likeCountText)
+          var likeCount = parseInt(likeCountText.attr("data-likes"))
+
+          if (likeUrl){
+             $.ajax({
+              url: likeUrl,
+              method: "GET",
+              dataType: 'json',
+              data: {},
+              success: function(data){
+                console.log(data)
+                if (data.liked){
+                	new_count = likeCount + 1
+                	updateText(this_, likeCountText, new_count, 'Unlike')
+                } else {
+                	
+                  new_count = likeCount - 1
+                	updateText(this_, likeCountText, new_count, 'Like')
+                }
+              }, error: function(error){
+                console.log(error)
+                console.log("error")
+              }
+            })
+          }
+        }
+       
+      })
+  })
+</script>

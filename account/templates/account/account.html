@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'snippets/modals/connection-modal.html' %}
+
+{% include 'snippets/buttons_css.html' %}
+
+<!-- <style>
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+</style> -->
+
+
+
+
+
+<style type="text/css">
+	
+	.h3{
+		text-align: center;
+	}
+	.profile_picture {
+  		border-radius: 50%;
+  		height: 150px;
+  		width: 150px;
+  	}
+  	.edit_button{
+  		border: 0.5px solid #d9d9d9;
+  		border-radius: 5px;
+  		width:95px;
+  		height:30px; 
+  	}
+  	.first-row{
+  		max-width: 300px;
+  		margin: auto;
+  		margin-right: 200px;
+  		padding: 0px
+  	}
+  	.list-group-item{
+  		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+  	}
+  	.follow-back-btn{
+  		width: 96px;
+		height: 33px;
+		font-size: 12px;
+		background-color: #1f8eed;
+		color: white;
+		align-self: center;
+		font-weight: 790;
+  	}
+
+
+</style>
+	<div onload="myFunction()" class="container-fluid">
+		<div class="row">
+			{% if user_profile_requested %}
+				<p>{{user_profile}} has requested to follow you</p>
+				<a href="{% url 'confirm_request' user_profile.slug%}">Confirm</a>
+				<a href="{% url 'cancel_request' user_profile.slug%}">Cancel</a>
+			{% endif %}
+
+			<div class="col-4">
+				<img class="ml-5 mt-5 profile_picture" src="{{user_profile.profile_picture.url}}">
+			</div>
+				
+
+			<div class="col">
+				<div class="row first-row">
+				
+				<p class="my-5" style="font-size: 22px;">{{user_profile}}</p>
+				{% if user_profile == request.user %}
+					<a class="m-auto text-dark edit_button text-center" style="font-size: 14px" href="{% url 'account_edit' %}"><b >Edit Profile</b></a>
+					<a class="my-auto btn btn-outline-secondary" style="width:85px; height:40px;" href="{% url 'chat:inbox' %}">Inbox</a>
+					<a class="my-auto btn btn-outline-secondary" style="width:85px; height:40px;" href="{% url 'activity:notifications' %}">Notifications</a>
+
+
+				
+				{% elif requested %}
+					<a class="my-5 m-auto text-dark edit_button " style="width:80px; height:30px" href="{% url 'unfollow' user_profile.slug%}">Requested</a>
+				{% elif not_follows %}
+					<a class="my-5 btn btn-primary " style="width:80px; height:40px" href="{% url 'follow' user_profile.slug%}">Follow</a>
+				{% elif follow_back %}
+					<a class="my-5 btn follow-back-btn " href="{% url 'follow' user_profile.slug%}">Follow Back</a>
+				{% else %}
+					<button  type="button"  data-toggle="modal" data-target="#exampleModalCenter" class="my-auto following-btn button mx-auto" style="width:111px; height:30px; background-color: inherit;">Following</button>
+					<a class="my-auto btn btn-primary " style="width:90px; height:30px;" href="{% url 'chat:new_chat' user_profile.slug%}">Message</a>
+				{% endif %}
+				</div>
+
+				<div class="row w-50">
+					<p class="m-auto "><b>{{posts_count}}</b> posts</p>
+				
+					<a id="followers" class="m-auto text-dark" style="text-decoration: none;" href="{% url 'followers' user_profile.slug%}"><b>{{followers}}</b> followers</a>
+
+					<a id="following" class="m-auto text-dark" style="text-decoration: none;" href="{% url 'following' user_profile.slug%}"><b>{{following}} </b> following</a>
+
+				</div>
+
+				<div class="row">
+					<p class="ml-5 mt-4">{{user_profile.name}}</p>
+				</div>
+			</div>
+
+
+			<!-- <div class="col-lg-8 col-md-5 col-sm-8 col-xs-8 offset-md-4" >
+				<div class="row">
+					<p class="m-auto "><b>{{user_profile.posts.count}}</b> posts</p>
+				
+					<a class="m-auto text-dark" style="text-decoration: none;" href="{% url 'followers' user_profile.slug%}"><b>{{followers}}</b> followers</a>
+
+					<a class="m-auto text-dark" style="text-decoration: none;" href="{% url 'following' user_profile.slug%}"><b>{{following}} </b> following</a>
+
+				</div>
+			</div> -->
+		</div>
+
+		<hr>
+		<div class=" mt-4 p-4">
+			<div class="col">
+				<div class="blog-posts">
+					{% if user_profile == request.user %}
+						<a class="col-sm-3 offset-sm-9 " href="{% url 'post:create_post' %}">Create Post</a>
+					{% endif %}
+					{% if private or requested %}
+						<p>This account is private</p>
+						<p>Follow to see their photos and videos</p>
+					{% else %}
+					<h3 class="mb-3 font-weight-normal">Posts:</h3>
+						{% if posts %}
+							<ul>
+							{% for post in posts %}
+									<li class="list-group-item pb-4">
+										<a href="{% url 'post:detail_post' post.slug %}">{{post.caption}}</a>
+									</li>
+								</a>
+							{% endfor %}
+							</ul>
+						{% elif request.user == user_profile %}
+							
+							<p>You have no posts. Create a post 
+							<a href="{% url 'post:create_post' %}">here</a></p>
+
+						{% else %}
+
+							<p>User have no post to show</p>
+						{% endif %}
+					{% endif %}
+
+				</div>
+			</div>
+		</div>
+	</div>
+	{% if deleted %}
+		<div id="snackbar" class="show">{{deleted}}</div>
+	{% endif %}
+
+
+
+<!-- <script type="text/javascript">
+
+window.onload = myFunction();
+
+function myFunction() {
+  var x = document.getElementById("snackbar").className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+</script>
+ -->
+{% endblock content %}

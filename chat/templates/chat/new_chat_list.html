@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<style type="text/css">
+	.user_image {
+  		border-radius: 50%;
+  		width: 40px;
+  		height: 40px;
+  		
+  	}
+</style>
+
+<div class="container">
+	{% for account in accounts %}
+		<div class="row">
+			<img class="user_image" src="{{account.profile_picture.url}}">
+			<p>{{account.username}}</p>
+		</div>
+
+
+	{% endfor %}
+</div>
+
+
+
+{% endblock %}

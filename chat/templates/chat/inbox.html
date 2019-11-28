@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<style type="text/css">
+	.user_image {
+  		border-radius: 50%;
+  	}
+  	p {
+  		color: 	#ababab;
+  		font-size: 13px;
+	}
+	.main-content{
+		 box-shadow: 0 0 13px rgba(0, 0, 0, 0.4);
+	}
+	
+	.new-chat{
+		margin-left: auto;
+		margin-top: auto;
+		margin-right: 10px
+	}
+	.title{
+		margin-left: 15px;
+		margin-top: auto;
+	}
+</style>
+
+
+<div class="container">
+
+
+	<div class="col-sm-8 offset-sm-2 main-content" style="background-color: white; border-radius: 20px;">
+		<div class="row">
+			<h4 class="mt-3 mb-0 title" style="font-size: 17px;">Messages</h4>
+			<a class="new-chat" href="{% url 'chat:new' %}"><svg height="30px" width="30px" viewBox="0 0 36 36"><g id="compose" fill="none" fill-rule="evenodd" stroke="none" stroke-width="1"><polygon id="Fill-1" points="0 36 36 36 36 0 0 0"></polygon><path id="Fill-2" d="M15.047,20.26245 L15.9815,17.45445 C16.091,17.12495 16.276,16.82495 16.5215,16.57945 L27.486,5.60195 C28.29,4.79695 29.595,4.79695 30.399,5.60195 C31.2025,6.40645 31.202,7.70895 30.399,8.51345 L19.432,19.49345 C19.186,19.73945 18.886,19.92495 18.556,20.03495 L15.7555,20.96995 C15.318,21.11645 14.901,20.69995 15.047,20.26245 Z M24.005,28.00095 L12.001,28.00095 C9.791,28.00095 8,26.20945 8,23.99995 L8,11.99895 C8,9.78945 9.791,7.99845 12.001,7.99845 L19.0035,7.99745 C19.5555,7.99745 20.0035,8.44545 20.0035,8.99745 C20.0035,9.54995 19.5555,9.99795 19.0035,9.99795 L12.001,9.99845 C10.8965,9.99845 10.0005,10.89395 10.0005,11.99895 L10.0005,23.99995 C10.0005,25.10445 10.8965,26.00045 12.001,26.00045 L24.005,26.00045 C25.1095,26.00045 26.005,25.10445 26.005,23.99995 C26.005,23.99995 26.0045,17.55145 26.0045,16.99895 C26.0045,16.44645 26.4525,15.99845 27.005,15.99845 C27.557,15.99845 28.005,16.44645 28.005,16.99895 C28.005,17.55145 28.0055,23.99995 28.0055,23.99995 C28.0055,26.20945 26.2145,28.00095 24.005,28.00095 Z" fill="#000000"></path></g></svg></a>
+		</div>
+		<hr class="mt-2">
+		{% for chat in chats %}
+			{% if chat.user01 == request.user and chat.deletefor != 1 %}
+				<div class="row">
+					{% if chat.get_last_message != '' %}
+					<a style="text-decoration: none; font-size: 13px;" class="text-dark" href="{%url 'chat:message' chat.user02.slug %}">
+						<img class="user_image mx-2 mb-3" width= 40px height= 40px src="{{chat.user02.profile_picture.url}}">
+					</a>
+					<div class="col">
+						
+						{% if chat.get_last_message.message_sender == request.user %}
+							<a style="text-decoration: none; font-size: 13px;" class="text-dark align-text-bottom" href="{%url 'chat:message' chat.user02.slug %}">{{chat.user02.username}}</a>
+							<p class="align-text-top">You:{{chat.get_last_message|truncatechars:100}}</p>
+						{% else %}
+							{% if chat.get_last_message.status == 1 %}
+								<a style="text-decoration: none; font-size: 13px;" class="text-dark align-text-bottom" href="{%url 'chat:message' chat.user02.slug %}"><b>{{chat.user02.username}}</b></a>
+								<p class="align-text-top" style="color: #525252"><b>{{chat.get_last_message|truncatechars:30}}</b></p>
+							{% else %}
+								<a style="text-decoration: none; font-size: 13px;" class="text-dark align-text-bottom" href="{%url 'chat:message' chat.user02.slug %}">{{chat.user02.username}}</a>
+								<p class="align-text-top">{{chat.get_last_message|truncatechars:30}}</p>
+							{% endif %}
+						{% endif %}
+						
+						
+
+
+						<!-- <p>{{chat.get_last_message_timestamp}}</p> -->
+
+					</div>
+						<div id="message_extras">
+<!-- 							<a class="ml-auto" href="{%url 'chat:delete_chat' id=chat.id %}">Remove</a> -->
+							<span data-toggle="modal" data-target="#exampleModalCenter" class="dropdown-btn mr-2">•••</span>
+						</div>
+					{% endif %}
+				</div>
+
+
+			{% elif chat.user02 == request.user and chat.deletefor != 2 %}
+				<div class="row">
+					{% if chat.get_last_message != '' %}
+					<a style="text-decoration: none; font-size: 13px;" class="text-dark" href="{%url 'chat:message' chat.user01.slug %}">
+						<img class="user_image mx-2 mb-3" width= 40px height= 40px src="{{chat.user01.profile_picture.url}}">
+					</a>
+					<div class="col">
+						{% if chat.get_last_message.message_sender == request.user%}
+							<a style="text-decoration: none; font-size: 13px;" class="text-dark align-text-bottom" href="{%url 'chat:message' chat.user01.slug %}">{{chat.user01.username}}</a>
+							<p class="align-text-top" style="color: #525252">You:{{chat.get_last_message}}</p>
+						{% else %}
+							{% if chat.get_last_message.status == 1 %}
+								<a style="text-decoration: none; font-size: 13px;" class="text-dark align-text-bottom" href="{%url 'chat:message' chat.user01.slug %}"><b>{{chat.user01.username}}</b></a>
+								<p class="align-text-top" style="color: #525252"><b>{{chat.get_last_message}}</b></p>
+							{% else %}
+								<a style="text-decoration: none; font-size: 13px;" class="text-dark align-text-bottom" href="{%url 'chat:message' chat.user01.slug %}">{{chat.user01.username}}</a>
+								<p class="align-text-top" >{{chat.get_last_message}}</p>
+							{% endif %}
+
+						{% endif %}
+						
+					</div>
+					{% endif %}
+					<div id="message_extras">
+						<span data-toggle="modal" data-target="#exampleModalCenter" class="dropdown-btn mr-2">•••</span>
+					</div>
+				</div>
+
+			{% endif %}
+
+	{% endfor %} 
+	</div>
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,103 @@
+<style type="text/css">
+	.card{
+		max-width: 700px;
+		width: 100%;
+	}
+	.card-body{
+		padding: 20px;
+
+	}
+	.card-header{
+		background: #FFF;
+		height: 60px;
+		padding:10px;
+	}
+	.card {
+	  /*box-shadow: 3px 5px 8px 0 rgba(0, 0, 0, 0.2), 3px 18px 20px 0 rgba(0, 0, 0, 0.19);*/
+	  box-shadow: 0 0 13px rgba(0, 0, 0, 0.4);
+	  /*0 0 10px rgba(0, 0, 0, 0.2);*/
+	}
+	.dropdown-btn{
+		margin-left: auto;
+		font-size: 14px;
+		flex-direction: column;
+	}
+	/*.card-img-top{
+		width: 80%;
+		height: 80%;
+	}*/
+
+</style>
+
+
+{% if post %}
+<div class="container">
+	<div class="row mb-4">
+
+		<!-- Blog Post -->
+		<div class="card m-auto">
+			<div class="card-header">
+				<div class="col p-0 m-0">
+					<a class="text-dark" href="{% url 'account_detail' user.slug %}">
+						<img class="profile_picture mx-2" src="{{post.author.profile_picture.url}}">
+					</a>
+					<a style="text-decoration: none; font-size: 14px; font-weight: 600" class="text-dark" href="{% url 'account_detail' user.slug %}">{{post.author.username}}</a>
+					<span data-toggle="modal" data-target="#exampleModalCenter" class="dropdown-btn">•••</span>
+				</div>
+			</div>
+			
+			<a href="{% url 'post:detail_post' post.slug %}">
+				<img class="card-img-top" src="{{post.image.url}}">
+			</a>
+			
+			<div class="card-body mt-2 mb-2">
+
+				
+				<p class="card-caption" id="caption">
+					<a class="text-dark" href="{% url 'account_detail' post.author.slug %}"><b>{{post.author}}</b></a> {{post.caption|safe|truncatechars:100}}</p>
+				
+				<p class="card-text">
+					<!--Don't use 'Safe' in production it allows users to write script into your web-->
+				{{post.body|safe|truncatechars:250}}</p>
+
+				{% if authenticated %}
+
+					{% if user in post.likes.all %}
+						<a class="btn btn-light like-btn" value='{{post.id}}' data-href="{% url 'post:like_post_api' post.slug %}">Unlike</a>
+					{% else %}
+						<a  data-href="{% url 'post:like_post_api' post.slug %}" value='{{post.id}}' class="btn btn-light like-btn">Like</a>
+					{% endif %}
+
+					<a style="font-size: 18px" value='{{ post.likes.all.count }}' class=" my-2 like-count text-dark" data-likes='{{ post.likes.all.count }}' href="{% url 'post:likes' post.slug %}">{{post.likes.all.count}} like{{post.likes.all.count|pluralize}}</a>
+
+				{% endif %}
+
+
+			</div>
+			<div class="card-footer text-muted">
+			  Updated on {{post.date_updated}} by {{post.author}}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% else %}
+
+<div class="container">
+	<div class="row">
+		<div class="card m-auto">
+			<div class="card-body mt-2 mb-2">
+				<h2 class="card-title">
+					No Title
+				</h2>
+				<p class="card-text"> There were no results matching your search: "{{query}}".</p>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+
+{% endif %}
+
+{% include 'post/snippets/like_js.html' %}

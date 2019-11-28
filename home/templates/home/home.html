@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<style type="text/css">
+	@media (max-width: 768px) { 
+		.right-column{
+			margin-left: 0px;
+		}
+	}
+	@media (min-width: 768px) { 
+		.right-column{
+			margin-left: 20px;
+		}
+		.container{
+			padding-right: 0
+		}
+	}
+	.blog-post-container{
+		margin-bottom: 20px;
+		width: 100%;
+	}
+	.create-post-bar{
+		background-color: #fff;
+		margin-bottom:20px;
+	}
+	.left-column{
+		padding:0px;
+	}
+	.right-column{
+		padding:0px;
+		max-height: 550px;
+	}
+	.lead{
+		font-size: 17px;
+	}
+	.profile_picture{
+		border-radius: 50%;
+		width: 40px;
+		height: 40px;
+	}
+	.profile{
+		padding: 0px!important;
+		margin: 0px!important;
+		display: inline-block;
+  		position: relative;
+	}
+	.pagination{
+		margin: auto;
+	}
+	
+</style>
+<div class="container">
+	<div class="row">
+
+		<!-- blog feed -->
+		<div class="left-column mx-2 col-lg-8 offset-lg-1">
+
+			<!-- Top 'create post' bar -->
+			<!-- <div class="d-lg-none mb-4">
+				<div class="card m-auto d-flex flex-column p-3">
+					<img class="img-fluid d-block m-auto pb-2" src="{% static 'django1.png' %}" width="72" height="72">
+					<p class="lead">Create a new Post.</p>
+					<p class="m-auto"><a class="btn btn-primary" href="{% url 'post:create_post' %}">Create post</a></p>
+				</div>
+			</div> -->
+			<!-- end Top 'create post' bar -->
+
+			<!-- Blog posts-->
+			{% if posts %}
+				{% for post in posts %}
+					<div class="blog-post-container">
+						{% include 'post/snippets/post_snippet.html' with post=post %}
+					</div>
+				{% endfor %}
+			{% else %}
+				<div class="blog-post-container">
+					{% include 'post/snippets/post_snippet.html' with query=query %}
+				</div>
+
+
+			{% endif %}
+
+			<!-- End Blog posts-->
+			<!-- Pagination-->
+			<div class="pagination">
+			{% include 'post/snippets/post_pagination.html' with posts=posts %}
+			</div>
+		</div>
+		<!-- end blog feed -->
+
+		
+
+
+		<!-- <div style="max-height: 200px" class="right-column col-lg-3 d-lg-flex d-none flex-row">
+			<div class="d-flex">
+				
+			</div>
+			
+		</div> -->
+		<!-- <p>Hello world</p> -->
+		<!-- Right 'create post' column  -->
+		<div class="right-column col-lg-3 col-4 d-lg-flex d-none flex-column">
+
+			<div class="d-flex flex-row" style="max-height: 60px">
+				<a style="text-decoration: none; font-size: 13px;" class="text-dark" href="{% url 'account_detail' user.slug %}">
+						<img class="profile_picture mx-2" src="{{user.profile_picture.url}}">
+					</a>
+				<div class="col">
+						<a style="text-decoration: none; font-size: 13px;" class="text-dark align-text-bottom" href="{% url 'account_detail' user.slug %}"><b>{{user.username}}</b></a>
+						<p>{{user.name}}</p>
+				</div>
+
+				
+			</div>
+
+			<div class="card create-post-bar d-flex flex-column p-3">
+				<!-- <img class="img-fluid d-block m-auto pb-2" src="{% static 'django1.png' %}" width="72" height="72"> -->
+				<p class="lead">Suggestions for you</p>
+				
+			</div>
+		
+		</div>
+		<!-- end Right 'create post' column  -->
+
+	</div>
+</div>
+
+
+{% endblock content %}

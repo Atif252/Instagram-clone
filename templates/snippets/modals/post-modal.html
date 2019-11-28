@@ -1,0 +1,60 @@
+<style type="text/css">
+  .unfollow{
+      color: #e4405f !important;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .modal-image{
+      height: 90px;
+      width: 90px;
+      border-radius: 50%;
+      margin-right: auto;
+      margin-left: auto;
+      display: block;
+    }
+    .modal-body{
+      text-align: center;
+    }
+    a:hover{
+      text-decoration: none;
+    }
+    .my-modal{
+      width: 400px;
+      
+    }
+    .modal-content{
+      border-radius: 20px;
+    }
+    @media(max-width: 735px){
+      .profile_picture{
+        height: 110px;
+        width: 110px;
+      }
+      .my-modal{
+      width: 270px;
+      }
+
+    }
+    hr.divider{
+      margin: 10px;
+    }
+</style>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered my-modal" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+      	<img class="modal-image mt-3" src="{{ user_profile.profile_picture.url }}">
+        <p class="text-center my-4" style="color:#262626;font-size: 14px;" >Unfollow @{{user_profile.username }}?</p>
+        <hr class="divider">
+        <a class="text-center unfollow" href="{% url 'unfollow' user_profile.slug%}">Unfollow</a>
+        <hr class="divider">
+
+        <a class="text-center text-dark" data-dismiss="modal" aria-label="Close" style="font-size: 14px" href="">Cancel</a>
+
+      </div>
+    </div>
+  </div>
+</div>

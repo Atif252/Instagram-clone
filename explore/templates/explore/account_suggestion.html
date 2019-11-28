@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<style type="text/css">
+
+	.profile_picture{
+		border-radius: 50%;
+		margin-bottom: 10px;
+		align-self: center;
+		width: 55px!important;
+		height: 55px!important;
+	}
+	.btn{
+		width: 64px;
+		height: 30px;
+		font-size: 12px;
+		background-color: #1f8eed;
+		color: white;
+		align-self: center;
+		font-weight: 750;
+
+	}
+	.btn:hover{
+		color: white; 
+	}
+	.title{
+		color: #999999;
+		font-size: 14px;
+		font-weight: bold;
+	}
+	.suggestion_text{
+		color: #999999;
+		font-size: 12px;
+		align-self: center;
+	}
+	#card-row{
+		overflow-x: scroll;
+	}
+	::-webkit-scrollbar {
+	display: none;
+	}
+
+
+</style>
+
+{% include 'snippets/buttons_css.html' %}
+
+<div class="container">
+	<p class="mt-5 title">Discover People</p>
+
+	<button type="button" id="right">Right</button>
+	<div class="d-flex flex-row row-md-4" id="card-row">
+		{% for account in accounts %}
+			
+			{% if account != request.user %}
+
+			<div class="row mx-4">
+				<div class="card py-3" style="width: 175px; height: 190px" >
+					<img class= "profile_picture"  src="{{account.profile_picture.url}}">
+
+					<!-- {% if account in connection.followers %} -->
+						
+					<!-- {% endif %} -->
+					<a style="text-decoration: none; font-size: 13px; text-align: center;" class="text-dark my-1" href="{% url 'account_detail' account.slug %}"><b>{{account}}</b></a>
+					<!-- <p>{{check_if_following.following}} {{account}}</p> -->
+
+
+
+					<!--OLD METHOD-->
+					<!-- {% if check_if_following.following == account %}
+						<p class="suggestion_text">Follows you</p>
+
+					{% else %}
+						<p class="suggestion_text">Suggested for you</p>
+					{% endif %} -->
+
+					<!-- <p>{{ account }}{{ following_list }}</p> -->
+					{% if account in following_list %}
+						<p class="suggestion_text">Follows you</p>
+
+					{% else %}
+						<p class="suggestion_text">Suggested for you</p>
+
+					{% endif %}
+
+					{% if account in followers_list %}
+						{% include 'snippets/modals/connection-modal.html' with user_profile=account %}
+						<a href="{% url 'unfollow' account.slug%}" class="following-btn button mr-2 pb-2">Following</a>
+						<!-- <button  type="button"  data-toggle="modal" data-target="#exampleModalCenter" class="following-btn button mr-2 pb-2">Following</button> -->
+					{% elif account in request_list %}
+						<a href="{% url 'unfollow' account.slug%}" class="following-btn button mr-2 pb-2">Requested</a>
+					{% else %}
+						<a href="{% url 'follow' account.slug%}" class="follow-btn button mr-2 pb-2">Follow</a>
+
+					{% endif %}
+
+				</div>
+			</div>
+			{% endif %}
+			
+		{% endfor %}
+
+		<button class="ml-5" type="button" id="left">left</button>
+
+
+
+	</div>
+	
+	
+
+	
+
+</div>
+
+<script type="text/javascript">
+	var btn = $('.button')
+	var card_row = $('#card-row')
+
+	$('#right').click(function() {
+		console.log('right')
+		event.preventDefault();
+		card_row.animate({
+			scrollLeft: "+=500px"
+		}, 1000);
+		console.log()
+	});
+
+	$('#left').click(function() {
+		console.log('left')
+		event.preventDefault();
+		card_row.animate({
+			scrollLeft: "-=500px"
+		}, 1000);
+	});
+</script>
+
+{% endblock %}

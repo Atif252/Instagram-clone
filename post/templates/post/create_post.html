@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style type="text/css">
+  .create-form {
+	    width: 100%;
+	    max-width: 100%;
+	    padding: 15px;
+	    margin: auto;
+  	}
+  	.submit-button{
+  		max-width: 200px;
+  	}
+</style>
+
+<div class="container">
+	<div class="row">
+		<div class="col-lg-7 offset-lg-1">
+
+
+			{% if success_message %}
+				<h3 style="color:green; text-align: center;">{{success_message}}</h3>
+			{% endif %}
+			
+
+			<form class="create-form" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+				<!-- Body -->
+				<div class="form-group">
+					<label for="id_caption">Caption</label>
+					<textarea class="form-control" rows="10" type="text" name="caption" id="id_caption" placeholder="Caption here..." required></textarea>
+				</div>
+
+				<!-- Image -->
+				<div class="form-group">
+					<label for="id_image">Image</label>
+					<input  type="file" name="image" id="id_image" accept="image/*" required>
+				</div>
+
+				<!-- Submit btn -->
+				<button class="submit-button btn btn-lg btn-primary btn-block" type="submit">POST</button>
+			</form>	
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	if(performance.navigation.type == 2){
+		location.reload(true);
+	}
+</script>
+
+
+{% endblock content %}

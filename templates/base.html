@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+ <html>
+ <head>
+ 	<title>Instagram Clone</title>
+
+ 	<meta charset="utf-8">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+ 	{% include 'snippets/header.html' %}
+ </head>
+ <body>
+
+ 	{% include 'snippets/base_css.html' %}
+
+ 	<style type="text/css">
+ 		.main{
+ 			min-height: 100vh;
+ 			height: 100%;
+ 			padding-right: 0;
+ 			margin-top: 100px
+ 		}
+ 	</style>
+
+ 	<div class="main">
+ 		{% block content %}
+
+ 		{% endblock %}
+ 	</div>
+
+
+
+ </body>
+ <footer>
+ 	{% include 'snippets/footer.html' %}
+ </footer>
+ </html>
