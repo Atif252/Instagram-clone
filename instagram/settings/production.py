@@ -127,7 +127,42 @@ USE_L10N = True
 USE_TZ = True
 
 
-ADMINS = (('Atif Sikander', 'atif.sik252@email.com'),)
+ADMINS = [('Atif Sikander', 'atif.sik252@email.com'),]
+
+
+
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+     'console':{
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}
+
+
 
 
 # Static files (CSS, JavaScript, Images)
