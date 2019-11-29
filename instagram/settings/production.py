@@ -18,7 +18,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'toy^p**jvg*wlh_wc*inq46!*&@x%*dwbuq-r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['instagram-clone252.herokuapp.com']
+ALLOWED_HOSTS = ['instagram-clone252.herokuapp.com', '.instagram252.com']
 
 
 # Application definition
@@ -125,6 +125,9 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+ADMINS = (('Atif Sikander', 'atif.sik252@email.com'),)
 
 
 # Static files (CSS, JavaScript, Images)
