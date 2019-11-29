@@ -11,8 +11,8 @@ def upload_location(instance, filename, **kwargs):
 	file_path = 'profile-picture/{author_id}/{filename}'.format(
 			author_id=str(clean_username), filename=filename
 		)
-	url = ' https://api.cloudinary.com/v1_1/instacloud252/image/upload' + file_path
-	return url
+
+	return file_path
 
 
 class MyAccountManager(BaseUserManager):
