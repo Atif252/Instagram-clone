@@ -8,7 +8,7 @@ from post.models import Post
 
 
 
-DEFAULT_IMG = 'https://res.cloudinary.com/instacloud252/image/upload/v1575045629/default-pic_ljw66l.jpg'
+DEFAULT_IMG = 'res.cloudinary.com/instacloud252/image/upload/v1575045629/default-pic_ljw66l.jpg'
 
 def upload_location(instance, filename, **kwargs):
 	clean_username = instance.username.replace(" ", "")
