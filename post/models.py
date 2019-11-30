@@ -12,6 +12,7 @@ def upload_location(instance, filename, **kwargs):
 	file_path = 'post/{author_id}/{caption}-{filename}'.format(
 			author_id=str(instance.author_id), caption=str(instance.caption), filename=filename
 		)
+	# result = cloudinary.uploader.unsigned_upload(file_path, 'post', **options)
 	return file_path
 
 
@@ -28,7 +29,7 @@ class Post(models.Model):
 	author				= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	slug				= models.SlugField(blank=True, unique=True, max_length=11, default=generate_id)
 	likes 				= models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='post_likes')
-
+`
 	objects = models.Manager()
 
 	def __str__(self):

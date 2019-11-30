@@ -139,10 +139,11 @@ USE_TZ = True
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-STATICFILES_DIRS = os.path.join(BASE_DIR, "static_cdn"),
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static_cdn')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media_cdn')
-TEMP = os.path.join(BASE_DIR, 'temp')
+MEDIA_ROOT = os.path.join(BASE_DIR, "..", "www", "media")
+# STATICFILES_DIRS = os.path.join(BASE_DIR, "static_cdn"),
+# STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static_cdn')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media_cdn')
+# TEMP = os.path.join(BASE_DIR, 'temp')
 
 
 
