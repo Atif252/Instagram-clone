@@ -6,6 +6,10 @@ from django.conf import settings
 from django.dispatch import receiver
 from post.models import Post
 
+
+
+DEFAULT_IMG = 'https://res.cloudinary.com/instacloud252/image/upload/v1575045629/default-pic_ljw66l.jpg'
+
 def upload_location(instance, filename, **kwargs):
 	clean_username = instance.username.replace(" ", "")
 	file_path = 'profile-picture/{author_id}/{filename}'.format(
@@ -62,7 +66,7 @@ class Account(AbstractBaseUser):
 	email				= models.EmailField(verbose_name="email", max_length=255, unique=True)
 	username			= models.CharField(unique=True, max_length=255)
 	name				= models.CharField(max_length=255, null=False, blank=False)
-	profile_picture		= models.ImageField(upload_to=upload_location, null=False, blank=True, default='https://res.cloudinary.com/instacloud252/image/upload/v1575045629/default-pic_ljw66l.jpg')
+	profile_picture		= models.ImageField(upload_to=upload_location, null=False, blank=True, default=DEFAULT_IMG)
 	bio					= models.CharField(verbose_name="bio", max_length=150, blank=True, null=False)
 	gender				= models.CharField(max_length=80, choices=GENDER_CHOICES, null=True)
 	account_type		= models.CharField(max_length=80, choices=ACCOUNT_CHOICES, null=False, blank=True, default='public')
