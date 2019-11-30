@@ -29,7 +29,7 @@ class Post(models.Model):
 	author				= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	slug				= models.SlugField(blank=True, unique=True, max_length=11, default=generate_id)
 	likes 				= models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='post_likes')
-`
+
 	objects = models.Manager()
 
 	def __str__(self):
