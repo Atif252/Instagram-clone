@@ -60,21 +60,27 @@
 		text-align: center;
 	}
 	.profile_picture {
-  		border-radius: 50%;
-  		height: 150px;
-  		width: 150px;
-  	}
+	  		border-radius: 50%;
+	  		height: 80px;
+	  		width: 80px;
+	  	}
+	@media(min-width: 768px){
+		.profile_picture {
+	  		height: 150px;
+	  		width: 150px;
+	  	}
+	  	hr{
+	  		margin-top: 40px;
+	  	}
+	}
+
   	.edit_button{
   		border: 0.5px solid #d9d9d9;
   		border-radius: 5px;
-  		width:95px;
   		height:30px; 
   	}
   	.first-row{
   		max-width: 300px;
-  		margin: auto;
-  		margin-right: 200px;
-  		padding: 0px
   	}
   	.list-group-item{
   		overflow: hidden;
@@ -90,74 +96,127 @@
 		align-self: center;
 		font-weight: 790;
   	}
+  	.profile{
+  		padding: 60px, 20px, 0px;
+  	}
+  	.detail-count{
+  		max-width: 280px;
+  	}
+	.inbox-btn{
+		border-radius: 4px;
+		font-size: 14px;
+		font-weight: 600;
+  		height: 30px;
+  		text-align: center;
+	}
+	.first-small-row{
+		margin: 30px, 16px, 24px;
+	}
 
 
 </style>
-	<div onload="myFunction()" class="container-fluid">
+	<div class="container profile">
+
 		<div class="row">
 			{% if user_profile_requested %}
 				<p>{{user_profile}} has requested to follow you</p>
 				<a href="{% url 'confirm_request' user_profile.slug%}">Confirm</a>
 				<a href="{% url 'cancel_request' user_profile.slug%}">Cancel</a>
 			{% endif %}
-
-			<div class="col-4">
-				<img class="ml-5 mt-5 profile_picture" src="{{user_profile.profile_picture.url}}">
-			</div>
-				
-
-			<div class="col">
-				<div class="row first-row">
-				
-				<p class="my-5" style="font-size: 22px;">{{user_profile}}</p>
-				{% if user_profile == request.user %}
-					<a class="m-auto text-dark edit_button text-center" style="font-size: 14px" href="{% url 'account_edit' %}"><b >Edit Profile</b></a>
-					<a class="my-auto btn btn-outline-secondary" style="width:85px; height:40px;" href="{% url 'chat:inbox' %}">Inbox</a>
-					<a class="my-auto btn btn-outline-secondary" style="width:85px; height:40px;" href="{% url 'activity:notifications' %}">Notifications</a>
-
-
-				
-				{% elif requested %}
-					<a class="my-5 m-auto text-dark edit_button " style="width:80px; height:30px" href="{% url 'unfollow' user_profile.slug%}">Requested</a>
-				{% elif not_follows %}
-					<a class="my-5 btn btn-primary " style="width:80px; height:40px" href="{% url 'follow' user_profile.slug%}">Follow</a>
-				{% elif follow_back %}
-					<a class="my-5 btn follow-back-btn " href="{% url 'follow' user_profile.slug%}">Follow Back</a>
-				{% else %}
-					<button  type="button"  data-toggle="modal" data-target="#exampleModalCenter" class="my-auto following-btn button mx-auto" style="width:111px; height:30px; background-color: inherit;">Following</button>
-					<a class="my-auto btn btn-primary " style="width:90px; height:30px;" href="{% url 'chat:new_chat' user_profile.slug%}">Message</a>
-				{% endif %}
-				</div>
-
-				<div class="row w-50">
-					<p class="m-auto "><b>{{posts_count}}</b> posts</p>
-				
-					<a id="followers" class="m-auto text-dark" style="text-decoration: none;" href="{% url 'followers' user_profile.slug%}"><b>{{followers}}</b> followers</a>
-
-					<a id="following" class="m-auto text-dark" style="text-decoration: none;" href="{% url 'following' user_profile.slug%}"><b>{{following}} </b> following</a>
-
-				</div>
-
-				<div class="row">
-					<p class="ml-5 mt-4">{{user_profile.name}}</p>
-				</div>
-			</div>
-
-
-			<!-- <div class="col-lg-8 col-md-5 col-sm-8 col-xs-8 offset-md-4" >
-				<div class="row">
-					<p class="m-auto "><b>{{user_profile.posts.count}}</b> posts</p>
-				
-					<a class="m-auto text-dark" style="text-decoration: none;" href="{% url 'followers' user_profile.slug%}"><b>{{followers}}</b> followers</a>
-
-					<a class="m-auto text-dark" style="text-decoration: none;" href="{% url 'following' user_profile.slug%}"><b>{{following}} </b> following</a>
-
-				</div>
-			</div> -->
 		</div>
 
-		<hr>
-		<div class=" mt-4 p-4">
+		<!--MEDIUM OR GREATER LAYOUT-->
+		<div class="row d-md-flex d-none">
+			<div class="col-md-3 offset-md-1">
+				<img class="mt-5 profile_picture" src="{{user_profile.profile_picture.url}}">
+			</div>
+			<div class="col detail-col">
+				<div class="row first-row">
+					
+					<p class="mt-5" style="font-size: 22px;">{{user_profile}}</p>
+					{% if user_profile == request.user %}
+					<a class="mt-5 mx-3 text-dark edit_button text-center" style="font-size: 14px; width: 95px;" href="{% url 'account_edit' %}"><b >Edit Profile</b></a>
+					<a class="mt-5  following-btn inbox-btn"  href="{% url 'chat:inbox' %}">Inbox</a>
+
+
+					
+					{% elif requested %}
+						<a class="mt-5 m-auto text-dark edit_button " style="width:80px; height:30px" href="{% url 'unfollow' user_profile.slug%}">Requested</a>
+					{% elif not_follows %}
+						<a class="mt-5 btn btn-primary " style="width:80px; height:40px" href="{% url 'follow' user_profile.slug%}">Follow</a>
+					{% elif follow_back %}
+						<a class="mt-5 btn follow-back-btn " href="{% url 'follow' user_profile.slug%}">Follow Back</a>
+					{% else %}
+						<button  type="button"  data-toggle="modal" data-target="#exampleModalCenter" class="my-auto following-btn button mx-auto" style="width:111px; height:30px; background-color: inherit;">Following</button>
+						<a class="mt-5 btn btn-primary " style="width:90px; height:30px;" href="{% url 'chat:new_chat' user_profile.slug%}">Message</a>
+					{% endif %}
+				</div>
+
+				<div class="row detail-count d-md-flex d-none">
+					<p><b>{{posts_count}}</b> posts</p>
+				
+					<a id="followers" class="text-dark mx-4" style="text-decoration: none;" href="{% url 'followers' user_profile.slug%}"><b>{{followers}}</b> followers</a>
+
+					<a id="following" class="text-dark" style="text-decoration: none;" href="{% url 'following' user_profile.slug%}"><b>{{following}} </b> following</a>
+
+				</div>
+				<div class="row">
+					<p style="font-weight: 600">{{user_profile.name}}</p>
+				</div>
+			</div>
+		</div>
+
+
+
+		<!--SMALL OR EXTRA SMALL LAYOUT-->
+		<div class="d-md-none">
+			<div class="row first-row-small">
+				<div class="col-xs-3">
+					<img class="mt-1 ml-4 profile_picture" src="{{user_profile.profile_picture.url}}">
+				</div>
+				<div class="col ml-2">
+					<p class="mt-1" style="font-size: 22px;">{{user_profile}}</p>
+					{% if user_profile == request.user %}
+					<a class="mt-1 text-dark edit_button" style="font-size: 14px; " href="{% url 'account_edit' %}"><b >Edit Profile</b></a>
+
+
+					
+					{% elif requested %}
+						<a class="mt-1 m-auto text-dark edit_button " style="width:80px; height:30px" href="{% url 'unfollow' user_profile.slug%}">Requested</a>
+					{% elif not_follows %}
+						<a class="mt-1 btn btn-primary " style="width:80px; height:40px" href="{% url 'follow' user_profile.slug%}">Follow</a>
+					{% elif follow_back %}
+						<a class="mt-1 btn follow-back-btn " href="{% url 'follow' user_profile.slug%}">Follow Back</a>
+					{% else %}
+						<button  type="button"  data-toggle="modal" data-target="#exampleModalCenter" class="my-auto following-btn button mx-auto" style="width:111px; height:30px; background-color: inherit;">Following</button>
+						<a class="mt-1 btn btn-primary " style="width:90px; height:30px;" href="{% url 'chat:new_chat' user_profile.slug%}">Message</a>
+					{% endif %}
+				</div>
+			</div>
+			<div class="second-row-small ml-4 my-4">
+				<p style="font-weight: 600">{{user_profile.name}}</p>
+			</div>
+			<hr class="m-0">
+			<div class="row d-md-none" style="text-align: center; color: #999999; font-size: 14px;">
+					
+					<div class="col">
+						<p class="text-dark"><b>{{posts_count}}</b><br>posts</p>
+					</div>
+					<div class="col">
+						<a id="followers" class="text-dark" style="text-decoration: none;" href="{% url 'followers' user_profile.slug%}"><b>{{followers}}</b><br>followers</a>
+					</div>
+					<div class="col">
+						<a id="following" class="text-dark" style="text-decoration: none;" href="{% url 'following' user_profile.slug%}"><b>{{following}} </b><br>following</a>
+					</div>
+				</div>
+			
+		</div>
+		
+
+
+		
+		<div>
+			<hr>
 			<div class="col">
 				<div class="blog-posts">
 					{% if user_profile == request.user %}
@@ -192,20 +251,5 @@
 			</div>
 		</div>
 	</div>
-	{% if deleted %}
-		<div id="snackbar" class="show">{{deleted}}</div>
-	{% endif %}
 
-
-
-<!-- <script type="text/javascript">
-
-window.onload = myFunction();
-
-function myFunction() {
-  var x = document.getElementById("snackbar").className = "show";
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-}
-</script>
- -->
 {% endblock content %}
