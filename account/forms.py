@@ -5,9 +5,6 @@ from account.models import Account
 
 
 
-DEFAULT_IMG_URL = 'https://i.imgur.com/epVaCXs.jpg'
-
-
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(
         max_length=254, help_text="Required. Enter a valid email address")
@@ -36,13 +33,6 @@ class RegistrationForm(UserCreationForm):
             return username
         raise forms.ValidationError(
             'Username "%s" is already in use.' % username)
-
-    def save(self, commit=True):
-        account = self.instance
-        account.profile_picture = DEFAULT_IMG_URL
-        if commit:
-            account.save()
-        return account
 
 class AccountAuthenticationForm(forms.ModelForm):
     password = forms.CharField(label="Password", widget=forms.PasswordInput)
