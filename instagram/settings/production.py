@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'stories',
     'explore',
     'activity',
+    'cloudinary',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -131,6 +132,13 @@ USE_L10N = True
 USE_TZ = True
 
 
+CLOUDINARY = {
+  'cloud_name': 'instacloud252',  
+  'api_key': '559115988375311',  
+  'api_secret': 'reUZGjIrVUuH6USmdSS0RSBK-fU',  
+}
+
+
 
 
 # Static files (CSS, JavaScript, Images)
@@ -141,7 +149,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = ''
 STATICFILES_DIRS = os.path.join(BASE_DIR, "static_cdn"),
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static_cdn')
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media_cdn')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_cdn')
 TEMP = os.path.join(BASE_DIR, 'temp')
 
 

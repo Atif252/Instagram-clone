@@ -78,21 +78,27 @@
     
   <h1 class="h3 mb-3 font-weight-normal">Acount</h1>
   <input type="text" name="name" id="inputName" class="form-control" placeholder="Name" required value="{{account_form.initial.name}}">
+
   <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus value="{{account_form.initial.email}}">
+
   <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required value="{{account_form.initial.username}}">
+
   <input type="text" name="bio" id="inputBio" class="form-control" placeholder="Bio" value="{{account_form.initial.bio}}">
+
   <div class="form-check">
     <input type="checkbox" name="account_type" class="form-check-input" id="exampleCheck1" {% if response %} checked="checked" value="1" {% else %} value="0" {% endif %}>
     <label style="font-weight: bold; font-size: 14px" class="form-check-label" for="exampleCheck1">Private Account</label>
     <p>When your account is private, only people you approve can see your photos and videos on Instagram. Your existing followers won't be affected.</p>
   </div>
-    <div class="form-group image-group" id="id_image_group">
-        <img class="img-fluid image" style="width: 200px; height: 200px;" src="{{account_form.initial.profile_picture.url}}" id="id_image_display">
-            <div class="middle">
-                <div class="text">Change image</div>
-            </div>
-    </div>
-    <input type="file" name="image" id="id_image_file" accept="image/*" onchange="readURL(this)">
+
+  <div class="form-group image-group" id="id_image_group">
+      <img class="img-fluid image" style="width: 200px; height: 200px;" src="{{account_form.initial.profile_picture.url}}" id="id_image_display">
+          <div class="middle">
+              <div class="text">Change image</div>
+          </div>
+  </div>
+  
+  <input type="file" name="profile_picture" id="id_profile_picture" accept="image/*" onchange="readURL(this)">
 
 
   {% for field in account_form %}
@@ -116,8 +122,6 @@
 
 
 
-
-
   <button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
 </form>
 
@@ -131,9 +135,17 @@
 
 
 
+
+
+
+
+
+
+
+
 <script type="text/javascript">
     document.getElementById('id_image_group').onclick = function(event){
-        document.getElementById('id_image_file').click();
+        document.getElementById('id_profile_picture').click();
     };
     function readURL(input){
         var reader = new FileReader();
@@ -143,10 +155,6 @@
         };
         reader.readAsDataURL(input.files[0]);
     }
-
-    // if(performance.navigation.type == 2){
-    //  location.reload(true);
-    // }
 </script>
 
 {% endblock content %}

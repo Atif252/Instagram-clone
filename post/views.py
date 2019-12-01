@@ -13,6 +13,19 @@ from django.urls import reverse_lazy
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
+# import cloudinary
+# import datetime
+# import json
+
+
+# def upload_image(instance, filename, **kwargs):
+# 	file_path = 'post/{author}/'.format(
+# 			author=str(instance.author)
+# 	)
+# 	img_request = cloudinary.uploader.unsigned_upload(filename, "insta-clone", 
+# 	cloud_name = 'instacloud252', public_id=str(datetime.datetime.now()), folder=file_path)
+# 	url = list(img_request.values())[14]
+# 	return url
 
 
 
@@ -28,6 +41,10 @@ def create_post_view(request):
 		obj = form.save(commit=False)
 		author = Account.objects.filter(email=request.user.email).first()
 		obj.author = author
+		# if form.cleaned_data['image']:
+		# 	image = form.cleaned_data['image']
+		# 	url = upload_image(filename=image, instance=obj)
+		# 	obj.image = url
 		obj.save()
 		context['success_message'] = "Successfully Posted"
 		form = CreatePostForm()

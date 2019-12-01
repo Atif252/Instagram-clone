@@ -8,6 +8,8 @@ import random
 
 
 
+
+
 def upload_location(instance, filename, **kwargs):
 	file_path = 'post/{author_id}/{caption}-{filename}'.format(
 			author_id=str(instance.author_id), caption=str(instance.caption), filename=filename
@@ -23,7 +25,7 @@ def generate_id():
 
 class Post(models.Model):
 	caption				= models.CharField(max_length=2200, null=False, blank=True)
-	image				= models.ImageField(upload_to=upload_location, null=False, blank=False)
+	image				= models.ImageField(null=False, blank=False)
 	date_published		= models.DateTimeField(auto_now_add=True, verbose_name="date published")
 	date_updated		= models.DateTimeField(auto_now=True, verbose_name="date updated")
 	author				= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
