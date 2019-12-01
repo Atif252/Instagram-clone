@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.views.static import serve
@@ -74,10 +74,12 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'),
      name='password_reset_complete'),
     # path(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'media'}),
-    path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
+    # path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
 
 ]
-
+urlpatterns += re_path(r'^media/(?P<path>.*)$', serve, {
+            'document_root': settings.MEDIA_ROOT,
+        }),
 
 
 if settings.DEBUG:
