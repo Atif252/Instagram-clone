@@ -4,7 +4,7 @@
 
 {% include 'snippets/modals/connection-modal.html' %}
 
-{% include 'snippets/buttons_css.html' %}
+
 
 <!-- <style>
 #snackbar {
@@ -78,6 +78,7 @@
   		border: 0.5px solid #d9d9d9;
   		border-radius: 5px;
   		height:30px; 
+  		
   	}
   	.first-row{
   		max-width: 300px;
@@ -115,6 +116,10 @@
 
 
 </style>
+
+{% include 'snippets/buttons_css.html' %}
+
+
 	<div class="container profile">
 
 		<div class="row">
@@ -184,9 +189,9 @@
 					{% elif requested %}
 						<a class="mt-1 m-auto text-dark edit_button " style="width:80px; height:30px" href="{% url 'unfollow' user_profile.slug%}">Requested</a>
 					{% elif not_follows %}
-						<a class="mt-1 btn btn-primary " style="width:80px; height:40px" href="{% url 'follow' user_profile.slug%}">Follow</a>
+						<a class="mt-1 btn btn-primary " style="width:60px; height:30px" href="{% url 'follow' user_profile.slug%}">Follow</a>
 					{% elif follow_back %}
-						<a class="mt-1 btn follow-back-btn " href="{% url 'follow' user_profile.slug%}">Follow Back</a>
+						<a class="mt-1 btn follow-back-btn"  style="width:100px; height:30px" href="{% url 'follow' user_profile.slug%}">Follow Back</a>
 					{% else %}
 						<button  type="button"  data-toggle="modal" data-target="#exampleModalCenter" class="my-auto following-btn button mx-auto" style="width:111px; height:30px; background-color: inherit;">Following</button>
 						<a class="mt-1 btn btn-primary " style="width:90px; height:30px;" href="{% url 'chat:new_chat' user_profile.slug%}">Message</a>
@@ -196,17 +201,18 @@
 			<div class="second-row-small ml-4 my-4">
 				<p style="font-weight: 600">{{user_profile.name}}</p>
 			</div>
-			<hr class="m-0">
-			<div class="row d-md-none" style="text-align: center; color: #999999; font-size: 14px;">
+			<hr class="mb-2">
+			<div class="row d-md-none" style="text-align: center; padding: 12px, 0px; color: #999999; font-size: 14px;">
 					
 					<div class="col">
-						<p class="text-dark"><b>{{posts_count}}</b><br>posts</p>
+						<p class="m-0 p-0 text-dark"><b>{{posts_count}}</b></p>
+						<p class="m-0 p-0">posts</p>
 					</div>
 					<div class="col">
-						<a id="followers" class="text-dark" style="text-decoration: none;" href="{% url 'followers' user_profile.slug%}"><b>{{followers}}</b><br>followers</a>
+						<a id="followers" style="text-decoration: none; color: #999999" href="{% url 'followers' user_profile.slug%}"><b class="text-dark">{{followers}}</b><br>followers</a>
 					</div>
 					<div class="col">
-						<a id="following" class="text-dark" style="text-decoration: none;" href="{% url 'following' user_profile.slug%}"><b>{{following}} </b><br>following</a>
+						<a id="following" style="text-decoration: none; color: #999999" href="{% url 'following' user_profile.slug%}"><b class="text-dark">{{following}} </b><br>following</a>
 					</div>
 				</div>
 			
@@ -216,7 +222,7 @@
 
 		
 		<div>
-			<hr>
+			<hr class="mt-2">
 			<div class="col">
 				<div class="blog-posts">
 					{% if user_profile == request.user %}
