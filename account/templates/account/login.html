@@ -38,9 +38,20 @@
 		text-align: center;
 		
 	}
+	.login{
+		width: 400px;
+		height: 370px;
+		margin: auto;
+		background: #FFF;
+		border: 0.1px solid black;
+		margin-top: 150px;
+		padding: 20px;
+	}
 
 </style>
 
+
+<div class="login" style="">
 <form class="form-signin" method="post">{% csrf_token %}
 	<div class="d-flex flex-column pb-3">
 		<img class="img-fluid mx-auto d-flex d-block" src="{% static 'instagramtext.png' %}" alt="django logo" width="150" height="180">
@@ -67,5 +78,7 @@
 
   <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
 </form>
+
+</div>
 
 {% endblock content %}

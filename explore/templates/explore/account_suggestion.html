@@ -43,6 +43,10 @@
 	::-webkit-scrollbar {
 	display: none;
 	}
+	.arrows{
+		opacity: 0.3;
+  		filter: alpha(opacity=60);
+	}
 
 
 </style>
@@ -52,7 +56,7 @@
 <div class="container">
 	<p class="mt-5 title">Discover People</p>
 
-	<button type="button" id="right">Right</button>
+	<!-- <button type="button" class="arrows" id="right">Right</button> -->
 	<div class="d-flex flex-row row-md-4" id="card-row">
 		{% for account in accounts %}
 			
@@ -103,12 +107,10 @@
 			{% endif %}
 			
 		{% endfor %}
-
-		<button class="ml-5" type="button" id="left">left</button>
-
-
-
 	</div>
+
+
+	<!-- <button class="ml-5 arrows" type="button" id="left">left</button> -->
 	
 	
 
