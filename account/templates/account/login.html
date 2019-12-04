@@ -7,78 +7,107 @@
 
 
 <style type="text/css">
-	
 	.form-signin {
-	  width: 100%;
-	  max-width: 330px;
-	  padding: 15px;
 	  margin: auto;
 	}
 	.form-signin .form-control {
 	  position: relative;
 	  box-sizing: border-box;
-	  height: auto;
 	  padding: 15px;
 	  font-size: 16px;
+	  width: 300px;
+	  margin: auto;
+	  text-align: left;
 	}
 	.form-signin .form-control:focus {
 	  z-index: 2;
 	}
 	.form-signin input[type="email"] {
-	  margin-bottom: 10px;
-	  border-bottom-right-radius: 0;
-	  border-bottom-left-radius: 0;
+	  margin-bottom: 7px;
 	}
 	.form-signin input[type="password"] {
 	  margin-bottom: 10px;
-	  border-top-left-radius: 0;
-	  border-top-right-radius: 0;
 	}
 	.h3{
 		text-align: center;
 		
 	}
-	.login{
-		width: 400px;
-		height: 370px;
+	.login-button{
+		width: 300px;
+		height: 30px;
+		background: #3897F0;
 		margin: auto;
-		background: #FFF;
-		border: 0.1px solid black;
-		margin-top: 150px;
-		padding: 20px;
+		text-align: center;
+		color: #FFF;
+		align-self: center;
+		padding: auto;
+		border-radius: 7px;
+		border: 1px solid #3897F0;
+		font-weight: 500;
 	}
+	.login-button:hover{
+		color:#FFF;
+	}
+	.forgot-password-txt{
+		margin-top: 50px;
+		align-self: center;
+		margin: auto;
+		font-size: 12px;
+		padding-left: 100px;
+	}
+	.container{
+		padding: 25px;
+	  margin: auto;
+	  max-width: 350px;
+	  max-height: 350px;
+	  background: #FFF;
+	  border: 0.1px solid #e6e6e6;
+	  margin-top: 150px;
+
+	}
+
 
 </style>
 
 
-<div class="login" style="">
-<form class="form-signin" method="post">{% csrf_token %}
-	<div class="d-flex flex-column pb-3">
-		<img class="img-fluid mx-auto d-flex d-block" src="https://i.imgur.com/nLpWz7Q.png" alt="django logo" width="150" height="180">
-	</div>
-  <h1 class="h3 mb-3 font-weight-normal">LogIn to your Account</h1>
-  <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-
-  <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required >
-
-  {% for field in login_form %}
-		<p>
-			{% for error in field.errors %}
-				<p style="color:red">{{error}}</p>
-			{% endfor %}
-		</p>
-	{% endfor %}
-	{% if login_form.non_field_errors %}
-		<div style="color:red;">
-			<p>{{login_form.non_field_errors}}</p>
+<div class="col container">
+	<form class="form-signin" method="post" id="login_form">{% csrf_token %}
+		<div class="d-flex flex-column pb-3 mb-5 mt-2">
+			<img class="img-fluid mx-auto d-flex d-block" src="https://i.imgur.com/nLpWz7Q.png" width="150">
 		</div>
-	{% endif %}
+	  <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+
+	  <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required autofocus>
 
 
 
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
-</form>
+	  <button class="login-button text-center" form="login_form" type="submit">Log In</button>
+
+	  {% for field in login_form %}
+			<p>
+				{% for error in field.errors %}
+					<p style="color:red">{{error}}</p>
+				{% endfor %}
+			</p>
+		{% endfor %}
+		{% if login_form.non_field_errors %}
+			<div style="color:red;">
+				<p>{{login_form.non_field_errors}}</p>
+			</div>
+		{% endif %}
+
+	</form>
+
+
+	
+
+	<a href="{% url 'password_reset' %}" class="text-dark forgot-password-txt" >Forgot Password?</a>
 
 </div>
+
+<div class="col container" style="margin-top: 20px!important; height: 70px!important;">
+	<p style="font-size: 14px;align-self: center;">Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
+</div>
+
 
 {% endblock content %}

@@ -18,11 +18,11 @@ class Chat(models.Model):
 	started 			= models.DateTimeField(auto_now_add=True, editable=False)
 	user01				= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user01_chat', null=True)
 	user02				= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user02_chat', null=True)
-	deletefor			= models.IntegerField(choices=DELETEFOR_CHOICES, null = True, blank=True)
+	deletefor			= models.IntegerField(choices=DELETEFOR_CHOICES, null = True, blank=True, default=0)
 	
 
 	def get_last_message(self):
-		message = Message.objects.filter(chat=self).last()
+		message = Message.objects.filter(deletefor=0).filter(chat=self).last()
 		return message if message else ""
 
 	def get_last_message_timestamp(self):
