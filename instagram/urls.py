@@ -56,7 +56,7 @@ urlpatterns = [
     
     path('explore/', include('explore.urls', 'explore')),
     path('activity/', include('activity.urls', 'activity')),
-
+    
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='registration/password_change_done.html'), 
         name='password_change_done'),
 
@@ -73,6 +73,7 @@ urlpatterns = [
     
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'),
      name='password_reset_complete'),
+    
     # path(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'media'}),
     # path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
 
