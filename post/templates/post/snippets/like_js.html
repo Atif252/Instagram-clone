@@ -3,18 +3,16 @@
       bool = false;
 
       
-		  function updateText(btn ,component, newCount, status){
-        if (newCount === 1){
-          component.text(newCount + " " + 'like');
-        }else{
-          component.text(newCount + " " + 'likes');
-        }
-          
-          btn.text(status);
-          component.attr('data-likes', new_count)
-          bool = false;
-
-      }
+	function updateText(btn ,component, newCount, status){
+		if (newCount === 1){
+		  component.text(newCount + " " + 'like');
+		}else{
+		  component.text(newCount + " " + 'likes');
+		}
+		  btn.text(status);
+		  component.attr('data-likes', new_count)
+		  bool = false;
+	}
 
       $(".like-btn").click(function(e){
 
